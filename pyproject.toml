@@ -1,0 +1,12 @@
+[project]
+name = "sum-pairs"
+version = "0.1.0"
+description = "Package to find pairs of numbers that sum to a target value."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pytest>=8.3.5",
+]
