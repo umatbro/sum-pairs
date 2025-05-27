@@ -12,6 +12,10 @@ Install dependencies:
 uv sync
 ```
 `uv` will create a virtual environment (`./.venv`) and install all the required dependencies.
+Activate the virtual environment:
+```shell
+source .venv/bin/activate
+```
 
 Install pre-commit hooks:
 ```shell
