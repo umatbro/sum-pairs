@@ -8,6 +8,10 @@ Pair = tuple[int, int]
 
 
 class SumPairs:
+    """
+    A class to store pairs of integers that sum to the same value.
+    """
+
     def __init__(self):
         super().__init__()
         self._pairs: dict[Sum, set[Pair]] = defaultdict(set)
@@ -54,6 +58,18 @@ class SumPairs:
 
 
 def find_pairs(input: list[int]) -> SumPairs:
+    """
+    Find all unique pairs of integers in the input list that sum to the same value.
+    Returns a SumPairs object containing the pairs grouped by their sum.
+
+    :param input: List of integers to find pairs in.
+    :return: SumPairs object containing pairs grouped by their sum.
+
+    Example:
+    >>> pairs = find_pairs([1, 2, 3, 4])
+    >>> print(pairs)
+    Pairs: (1, 4), (2, 3) have sum 5
+    """
     result = SumPairs()
     for i in range(len(input)):
         for j in range(i + 1, len(input)):
