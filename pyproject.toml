@@ -8,5 +8,48 @@ dependencies = []
 
 [dependency-groups]
 dev = [
+    "pre-commit>=4.2.0",
     "pytest>=8.3.5",
+]
+
+[tool.uv]
+package = true
+
+[tool.ruff]
+output-format = "concise"
+line-length = 120
+
+[tool.ruff.lint]
+select = [
+    "B",    # flake8-bugbear
+    "C4",   # flake8-comprehensions
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "I",    # isort
+    "N",    # pep8-naming
+    "PIE",  # flake8-pie
+    "PT",   # flake8-pytest-style
+    "S",    # flake8-bandit
+    "SIM",  # flake8-simplify
+    "TC",   # flake8-type-checking
+    "UP",   # pyupgrade
+    "W",    # pycodestyle
+]
+
+ignore = [
+    "SIM102",   # Use a single `if` statement instead of nested `if` statements
+    "SIM108",   # Use ternary operator instead of `if`-`else`-block
+    "SIM110",   # Checks for `for` loops that can be replaced with a builtin function, like any or all
+    "SIM114",   # Combine `if` branches using logical `or` operator
+    "SIM116",   # Use a dictionary instead of consecutive if statements
+    "SIM118",   # Use `key in dict` instead of `key in dict.keys()`
+    "SIM212",   # Use `a if a else b` instead of `b if not a else a`
+]
+
+[tool.ruff.lint.isort]
+force-single-line = true
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = [
+    "S101",     # Use of assert detected
 ]
