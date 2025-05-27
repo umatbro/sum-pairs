@@ -1,11 +1,10 @@
 from collections import defaultdict
 
-# type aliases
-Sum = int
-Pair = tuple[int, int]
+type Pair[V] = tuple[V, V]  # V must support: __add__, __lt__, __eq__, __hash__
+type Sum[S] = S  # Sum is a type alias for the sum value, which can be a type that supports addition.
 
 
-class SumPairs(defaultdict[Sum, set[Pair]]):
+class SumPairs[V](defaultdict[Sum[V], set[Pair[V]]]):
     """
     A class to store pairs of integers that sum to the same value.
     """
@@ -14,9 +13,9 @@ class SumPairs(defaultdict[Sum, set[Pair]]):
         # Initialize the defaultdict with 'set' as the default factory
         super().__init__(set, *args, **kwargs)
 
-    def add_pair(self, sum_value: Sum, pair: Pair) -> None:
-        # Sort the pair to ensure that only unique pairs are stored
-        # Otherwise, we could end up with (a, b) and (b, a) as different pairs
+    def add_pair(self, sum_value: V, pair: Pair[V]) -> None:
+        # Sort the pair to ensure that only unique pairs are stored.
+        # Otherwise, we could end up with (a, b) and (b, a) as different pairs.
         self[sum_value].add(tuple(sorted(pair)))
 
     def clean(self) -> None:
@@ -40,12 +39,13 @@ class SumPairs(defaultdict[Sum, set[Pair]]):
         )
 
 
-def find_pairs(input: list[int]) -> SumPairs:
+def find_pairs[V](items: list[V]) -> SumPairs[V]:
     """
-    Find all unique pairs of integers in the input list that sum to the same value.
+    Find all unique pairs of items in the input list that sum to the same value.
     Returns a SumPairs object containing the pairs grouped by their sum.
 
-    :param input: List of integers to find pairs in.
+    :param items: List of items to find pairs in.
+    The items must support addition, comparison, and be hashable (e.g., integers, floats, strings).
     :return: SumPairs object containing pairs grouped by their sum.
 
     Example:
@@ -54,9 +54,9 @@ def find_pairs(input: list[int]) -> SumPairs:
     Pairs: (1, 4), (2, 3) have sum 5
     """
     result = SumPairs()
-    for i in range(len(input)):
-        for j in range(i + 1, len(input)):
-            pair_sum = input[i] + input[j]
-            result.add_pair(pair_sum, (input[i], input[j]))
+    for i in range(len(items)):
+        for j in range(i + 1, len(items)):
+            pair_sum = items[i] + items[j]
+            result.add_pair(pair_sum, (items[i], items[j]))
     result.clean()
     return result

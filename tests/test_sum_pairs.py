@@ -1,7 +1,30 @@
+from dataclasses import dataclass
+from typing import Self
+
 import pytest
 
 from sum_pairs import SumPairs
 from sum_pairs import find_pairs
+
+
+@dataclass
+class Point:
+    """
+    A simple class to represent a point in 2D space
+    and test `find_pairs` with custom objects.
+    """
+
+    x: int
+    y: int
+
+    def __add__(self, other: Self) -> Self:
+        return Point(self.x + other.x, self.y + other.y)
+
+    def __lt__(self, other: Self) -> bool:
+        return (self.x, self.y) < (other.x, other.y)
+
+    def __hash__(self) -> int:
+        return hash((self.x, self.y))
 
 
 @pytest.mark.parametrize(
@@ -45,9 +68,20 @@ from sum_pairs import find_pairs
         ([5, 5, 5, 5], {}),  # result is empty because there is no more than one unique pair
         # test case with duplicate number that can form pairs
         ([5, 2, 8, 5, 3, 7], {10: {(2, 8), (3, 7), (5, 5)}}),
+        # test case with strings
+        (["a", "b", "c", "bc", ""], {"bc": {("b", "c"), ("", "bc")}}),
+        # test case with floats
+        ([1.5, 2.5, 3.5, 4.5], {6.0: {(1.5, 4.5), (2.5, 3.5)}}),
+        # test case with Point objects
+        (
+            [Point(1, 2), Point(0, 0), Point(1, 1), Point(2, 3)],
+            {
+                Point(2, 3): {(Point(0, 0), Point(2, 3)), (Point(1, 1), Point(1, 2))},
+            },
+        ),
     ],
 )
-def test_find_unique_pairs(input: list[int], expected_result: dict[int, list[tuple[int, int]]]):
+def test_find_unique_pairs[V](input: list[V], expected_result: dict[V, list[tuple[V, V]]]):
     result = find_pairs(input)
     assert result == expected_result, f"Expected {expected_result}, got {result}"
 
