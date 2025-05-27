@@ -43,6 +43,8 @@ from sum_pairs import find_pairs
         ([1, -1, 2, -2], {0: {(-1, 1), (-2, 2)}}),
         # test case with repeating numbers
         ([5, 5, 5, 5], {}),  # result is empty because there is no more than one unique pair
+        # test case with duplicate number that can form pairs
+        ([5, 2, 8, 5, 3, 7], {10: {(2, 8), (3, 7), (5, 5)}}),
     ],
 )
 def test_find_unique_pairs(input: list[int], expected_result: dict[int, list[tuple[int, int]]]):
