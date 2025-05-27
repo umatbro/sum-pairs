@@ -49,7 +49,7 @@ from sum_pairs import find_pairs
 )
 def test_find_unique_pairs(input: list[int], expected_result: dict[int, list[tuple[int, int]]]):
     result = find_pairs(input)
-    assert result.asdict() == expected_result, f"Expected {expected_result}, got {result}"
+    assert result == expected_result, f"Expected {expected_result}, got {result}"
 
 
 def test_sum_pairs_str():

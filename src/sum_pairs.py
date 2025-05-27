@@ -1,57 +1,40 @@
 from collections import defaultdict
-from collections.abc import Collection
-from collections.abc import Iterable
 
 # type aliases
 Sum = int
 Pair = tuple[int, int]
 
 
-class SumPairs:
+class SumPairs(defaultdict[Sum, set[Pair]]):
     """
     A class to store pairs of integers that sum to the same value.
     """
 
-    def __init__(self):
-        super().__init__()
-        self._pairs: dict[Sum, set[Pair]] = defaultdict(set)
+    def __init__(self, *args, **kwargs):
+        # Initialize the defaultdict with 'set' as the default factory
+        super().__init__(set, *args, **kwargs)
 
-    def add_pair(self, sum_value: Sum, pair: Pair):
-        self._pairs[sum_value].add(tuple(sorted(pair)))
+    def add_pair(self, sum_value: Sum, pair: Pair) -> None:
+        # Sort the pair to ensure that only unique pairs are stored
+        # Otherwise, we could end up with (a, b) and (b, a) as different pairs
+        self[sum_value].add(tuple(sorted(pair)))
 
     def clean(self) -> None:
         """
-        Remove sums that have less than two pairs.
+        Modify the SumPairs object in place: remove sums that have less than two pairs.
         """
-        self._pairs = {k: v for k, v in self._pairs.items() if len(v) > 1}
-
-    def asdict(self) -> dict[Sum, Collection[Pair]]:
-        """
-        Returns a dictionary representation of the sum pairs.
-        """
-        return self._pairs
-
-    def __iter__(self) -> Iterable[tuple[Sum, Collection[Pair]]]:
-        return iter(self._pairs.items())
-
-    def __eq__(self, other: dict[Sum, Collection[Pair]]) -> bool:
-        if not isinstance(other, dict):
-            raise TypeError("Comparison is only supported with a dictionary.")
-        if len(self._pairs) != len(other):
-            return False
-        for sum_, pairs in self._pairs.items():
-            if sum_ not in other or pairs != set(other[sum_]):
-                return False
-        return True
+        items_to_keep = {sum_value: pairs for sum_value, pairs in self.items() if len(pairs) > 1}
+        self.clear()
+        self.update(items_to_keep)
 
     def __str__(self) -> str:
         """
         For the purposes of pretty formatting:
 
-        * Sort pairs in each sum by the first element of the pair.
-        * Sort sums by the sum value.
+        * Sort sums (keys) by the sum value.
+        * Sort pairs (values) by the first element of the pair.
         """
-        data_to_print = {sum_value: sorted(pairs) for sum_value, pairs in sorted(self._pairs.items())}
+        data_to_print = {sum_value: sorted(pairs) for sum_value, pairs in sorted(self.items())}
         return "\n".join(
             f"Pairs: {', '.join(map(str, pairs))} have sum {sum_value}" for sum_value, pairs in data_to_print.items()
         )
