@@ -69,7 +69,10 @@ class Point:
         # test case with duplicate number that can form pairs
         ([5, 2, 8, 5, 3, 7], {10: {(2, 8), (3, 7), (5, 5)}}),
         # test case with strings
-        (["a", "b", "c", "bc", ""], {"bc": {("b", "c"), ("", "bc")}}),
+        (
+            ["a", "b", "ab", "c", "bc", ""],
+            {"bc": {("b", "c"), ("", "bc")}, "abc": {("a", "bc"), ("ab", "c")}, "ab": {("a", "b"), ("", "ab")}},
+        ),
         # test case with floats
         ([1.5, 2.5, 3.5, 4.5], {6.0: {(1.5, 4.5), (2.5, 3.5)}}),
         # test case with Point objects
