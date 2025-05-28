@@ -2,7 +2,25 @@
 
 Thanks to this package you can find pairs of numbers that sum to the same value.
 
-# Local development
+
+## Usage
+
+You can use the `find_pairs` function from the `sum_pairs` module to find pairs of numbers that sum to the same value.
+
+```python
+from sum_pairs import find_pairs
+
+pairs = find_pairs([1, 2, 3, 4, 5])
+```
+Should output:
+```
+Pairs: (1, 4), (2, 3) have sum 5
+Pairs: (1, 5), (2, 4) have sum 6
+Pairs: (2, 5), (3, 4) have sum 7
+```
+
+
+## Local development
 
 This package uses [uv](https://docs.astral.sh/uv/) package manager. You need to
 install it first. Follow the instructions in the [uv documentation](https://docs.astral.sh/uv/getting-started/installation/) to set it up.
@@ -27,7 +45,7 @@ Run tests
 pytest
 ```
 
-# Build & installation
+## Build & installation
 To build the package, run:
 ```shell
 uv build
@@ -39,17 +57,7 @@ pip install dist/sum_pairs-0.1.0-py3-none-any.whl
 pip install dist/sum_pairs-0.1.0.tar.gz
 ```
 
-# Usage
-To use the package, you can import it in your Python code:
-
-```python
-from sum_pairs import find_pairs
-
-pairs = find_pairs([1, 2, 3, 4, 5])
-```
-Should output:
-```
-Pairs: (1, 4), (2, 3) have sum 5
-Pairs: (1, 5), (2, 4) have sum 6
-Pairs: (2, 5), (3, 4) have sum 7
+You can also install the package directly from github:
+```shell
+pip install "git+ssh://git@github.com/umatbro/sum-pairs.git"
 ```
