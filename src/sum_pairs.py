@@ -1,6 +1,8 @@
 from collections import defaultdict
+from functools import reduce
+from itertools import combinations
 
-type Pair[V] = tuple[V, V]  # V must support: __add__, __lt__, __eq__, __hash__
+type Pair[V] = tuple[V, ...]  # V must support: __add__, __lt__, __eq__, __hash__
 type Sum[S] = S  # Sum is a type alias for the sum value, which can be a type that supports addition.
 
 
@@ -39,6 +41,19 @@ class SumPairs[V](defaultdict[Sum[V], set[Pair[V]]]):
         )
 
 
+def find_n_pairs[V](items: list[V], n: int) -> SumPairs[V]:
+    if n < 2:
+        raise ValueError("n must be at least 2")
+    com = combinations(items, n)
+    result = SumPairs()
+    for c in com:
+        init_value = c[0]
+        sum_values = reduce((lambda x, y: x + y), c[1:], init_value)
+        result.add_pair(sum_values, c)
+    result.clean()
+    return result
+
+
 def find_pairs[V](items: list[V]) -> SumPairs[V]:
     """
     Find all unique pairs of items in the input list that sum to the same value.
@@ -53,10 +68,4 @@ def find_pairs[V](items: list[V]) -> SumPairs[V]:
     >>> print(pairs)
     Pairs: (1, 4), (2, 3) have sum 5
     """
-    result = SumPairs()
-    for i in range(len(items)):
-        for j in range(i + 1, len(items)):
-            pair_sum = items[i] + items[j]
-            result.add_pair(pair_sum, (items[i], items[j]))
-    result.clean()
-    return result
+    return find_n_pairs(items, 2)

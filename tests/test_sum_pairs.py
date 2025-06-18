@@ -4,6 +4,7 @@ from typing import Self
 import pytest
 
 from sum_pairs import SumPairs
+from sum_pairs import find_n_pairs
 from sum_pairs import find_pairs
 
 
@@ -107,3 +108,28 @@ def test_sum_pairs_str():
         ]
     )
     assert str(obj) == expected_str, f"Expected {expected_str}, got {str(obj)}"
+
+
+@pytest.mark.parametrize(
+    ("input", "n", "expected_result"),
+    [
+        (
+            [0, 0, 2, 3, 4, 5, 6],
+            3,
+            {
+                5: {(0, 0, 5), (0, 2, 3)},
+                6: {(0, 0, 6), (0, 2, 4)},
+                7: {(0, 3, 4), (0, 2, 5)},
+                8: {(0, 2, 6), (0, 3, 5)},
+                9: {(2, 3, 4), (0, 3, 6), (0, 4, 5)},
+                10: {(2, 3, 5), (0, 4, 6)},
+                11: {(0, 5, 6), (2, 4, 5), (2, 3, 6)},
+                12: {(3, 4, 5), (2, 4, 6)},
+                13: {(3, 4, 6), (2, 5, 6)},
+            },
+        ),
+    ],
+)
+def test_sum_pairs_with_n(input, n, expected_result):
+    result = find_n_pairs(input, n)
+    assert result == expected_result, f"Expected {expected_result}, got {result}"
